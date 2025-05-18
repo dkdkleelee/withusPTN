@@ -426,12 +426,12 @@ td input[type="text"], td select {
                                         <table id="tbl_land" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                             <thead>
                                                 <tr>
-                                                    <th><input type="checkbox" name="chkall" value="1" id="chkall" onclick="check_all(this.form)"></th>
-                                                    <th class="text-center">NO</th>
-                                                    <th>이름</th>
-                                                    <th class="text-center">휴대번호</th>
-                                                    <th>등록일시</th>
-                                                    <th>상태</th>
+                                                    <th><input type="checkbox" class="text-center" name="chkall" value="1" id="chkall" onclick="check_all(this.form)"></th>
+                                                    <th class="text-center">NUM</th>
+                                                    <th class="text-center">이름</th>
+                                                    <th class="text-center">연락처</th>
+                                                    <th class="text-center">등록일</th>
+                                                    <th class="text-center">상태</th>
                                                     <th>메모</th>
                                                     
                                                     <?php 

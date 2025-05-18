@@ -23,6 +23,7 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 
 <!-- Custom scripts for all pages-->
 <script src="<?php echo G5_THEME_JS_URL; ?>/sb-admin-2.min.js"></script>
+<script src="<?php echo G5_THEME_JS_URL; ?>/user.js"></script>
 
 <!-- Page level plugins -->
 <script src="<?php echo G5_THEME_URL; ?>/vendor/chart.js/chart.min.js"></script>
