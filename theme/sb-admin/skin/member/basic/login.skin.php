@@ -47,9 +47,9 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
 								</form>
 								
 								<br>
-								<div class="text-center">
+								<!-- <div class="text-center">
 									<a class="small" href="<?php echo G5_BBS_URL; ?>/password_lost.php" id="login_password_lost">정보 찾기</a>
-								</div>
+								</div> -->
 								<hr>
 								<div class="text-center">
 									<a class="small" href="<?php echo G5_BBS_URL; ?>/register.php">회원 가입</a>
