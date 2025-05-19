@@ -44,11 +44,11 @@ if($member['mb_gubun'] == "P") {
 
 
 if ($stx_phone) {
-    $sql_search .= " and phone = HEX(AES_ENCRYPT('{$stx_phone}', 'gonpdk_secret_key')) ";
+    $sql_search .= " and tel = HEX(AES_ENCRYPT('{$stx_phone}', 'withus_secret_key')) ";
 }
 
 if ($stx_name) {
-    $sql_search .= " and userName like '%{$stx_name}%' ";
+    $sql_search .= " and name like '%{$stx_name}%' ";
 }
 
 if ($stx_db_status) {
@@ -88,8 +88,8 @@ if ($stx_fromto) {
 $sql_common = "
 select a.land_idx 
      , a.land_pg_idx
-     , a.userName 
-     , convert(aes_decrypt(unhex(a.phone), 'gonpdk_secret_key') using utf8) as phone
+     , a.name 
+     , convert(aes_decrypt(unhex(a.tel), 'withus_secret_key') using utf8) as tel
      , a.userData1
      , a.userData2
      , a.userData3
@@ -471,12 +471,12 @@ td input[type="text"], td select {
                                                 </td>
                                                 <td>
                                                     <a href="db_form?w=u&land_idx=<?php echo $row['land_idx'] . '&' . ltrim($qstr, '?'); ?>">
-                                                        <?php echo $row['userName'] == "" ? 'N/A': $row['userName'] ?>
+                                                        <?php echo $row['name'] == "" ? 'N/A': $row['name'] ?>
                                                     </a>
                                                     
                                                 </td>
                                                 <td class="text-center">
-                                                    <?php echo $row['phone'] ?>
+                                                    <?php echo $row['tel'] ?>
                                                 </td>
 
                                                 <td>
@@ -526,7 +526,7 @@ td input[type="text"], td select {
                                                 // 설정된 $dynamicColumnCount에 따라 userData1부터 userDataN까지 td 출력
                                                 for ($n = 1; $n <= 9; $n++) {
                                                     $pg_chk_data_var = 'pg_chk_data' . $n;
-                                                    $userDataKey = 'userData' . $n;
+                                                    $userDataKey = 'option' . $n;
                                                     if (!empty($items[$pg_chk_data_var])) {
                                                         echo "<td>";
                                                         echo isset($row[$userDataKey]) ? $row[$userDataKey] : '';
@@ -548,13 +548,6 @@ td input[type="text"], td select {
                                                     }
                                                     if ($items['pg_chk_ip'] == "1") {
                                                         $ip = $row['client_ip'];
-                                                    
-                                                        if ($member['mb_ptnidx'] == 1215) {
-                                                            $is_dup_ip = isset($dup_ip_list[$ip]);
-                                                            echo '<td' . ($is_dup_ip ? ' class="text-danger" title="중복 IP입니다" data-toggle="tooltip"' : '') . '>' . $ip . '</td>';
-                                                        } else {
-                                                            echo "<td>{$ip}</td>";
-                                                        }
                                                     }
                                                     ?>
                                             </tr>
