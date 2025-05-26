@@ -10,7 +10,12 @@ if (G5_IS_MOBILE) {
 include_once(G5_THEME_PATH.'/head.php');
 
 
-header("Location:" . G5_BIZ_URL . "/landing/db_list.php");
+if($is_member  ==  true) {
+    header("Location:" . G5_BIZ_URL . "/landing/db_list.php");
+} else {
+    goto_url(G5_BBS_URL.'/login.php');
+}
+
 
 
 if(defined('_INDEX_')) { // index에서만 실행
