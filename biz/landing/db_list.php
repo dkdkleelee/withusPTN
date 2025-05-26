@@ -324,89 +324,89 @@ td input[type="text"], td select {
                     </div>
                     <div class="card-body">
                         <div class="dataTables_wrapper dt-bootstrap4">
-                        <div class="card shadow mb-4">
-  <div class="card-body">
-    <div class="row align-items-end">
+                            <div class="card shadow mb-4">
+                                <div class="card-body">
+                                    <div class="row align-items-end">
 
-      <!-- 왼쪽: 엑셀/수정 버튼 -->
-      <div class="col-md-4 mb-3">
-        <div class="btn-group">
-          <button type="submit" form="listForm" class="btn btn-success btn-sm border border-dark" name="act_button" value="엑셀다운">
-            <i class="fas fa-file-download"></i> 다운
-          </button>
-          <?php echo $ptn_html ?>
-          <button type="submit" form="listForm" class="btn btn-primary btn-sm border border-dark" name="act_button" value="선택수정">
-            <i class="fas fa-eraser"></i> 수정
-          </button>
-        </div>
-      </div>
+                                    <!-- 왼쪽: 엑셀/수정 버튼 -->
+                                    <div class="col-md-4 mb-3">
+                                        <div class="btn-group">
+                                        <button type="submit" form="listForm" class="btn btn-success btn-sm border border-dark" name="act_button" value="엑셀다운">
+                                            <i class="fas fa-file-download"></i> 다운
+                                        </button>
+                                        <?php echo $ptn_html ?>
+                                        <button type="submit" form="listForm" class="btn btn-primary btn-sm border border-dark" name="act_button" value="선택수정">
+                                            <i class="fas fa-eraser"></i> 수정
+                                        </button>
+                                        </div>
+                                    </div>
 
-      <!-- 오른쪽: 검색 필터 -->
-      <div class="col-md-8">
-        <form class="row g-2" method="get" action="">
-          <div class="col-md-3">
-            <label for="search_phone" class="form-label">연락처</label>
-            <input type="text" id="search_phone" name="stx_phone" value="<?php echo $stx_phone ?>" class="form-control" placeholder="연락처" oninput="telHyphen(this);" minlength="13" maxlength="13">
-          </div>
-          <div class="col-md-2">
-            <label for="search_name" class="form-label">이름</label>
-            <input type="text" id="search_name" name="stx_name" value="<?php echo $stx_name ?>" class="form-control" placeholder="이름">
-          </div>
-          <div class="col-md-2">
-            <div class="form-group">
-                <label for="search_db_status">진행</label>
-                <select id="search_db_status" name="stx_db_status" class="form-control">
-                <option value="">전체</option>
-                <?php
-                if ($ptn_status_custom == "basic") {
-                    echo '<option value="wait"  '.get_selected($stx_db_status, 'wait').'>대기</option>';
-                    echo '<option value="1" '.get_selected($stx_db_status, '1').'>부재</option>';
-                    echo '<option value="2" '.get_selected($stx_db_status, '2').'>불량</option>';
-                    echo '<option value="3" '.get_selected($stx_db_status, '3').'>거절</option>';
-                    echo '<option value="4" '.get_selected($stx_db_status, '4').'>리콜</option>';
-                    echo '<option value="5" '.get_selected($stx_db_status, '5').'>중복</option>';
-                    echo '<option value="6" '.get_selected($stx_db_status, '6').'>유망</option>';
-                    echo '<option value="7" '.get_selected($stx_db_status, '7').'>승인</option>';
-                } else {
-                    if (!empty($ptn_status_custom)) {
-                    $customOptions = explode('||', $ptn_status_custom);
-                    foreach ($customOptions as $option) {
-                        $parts = explode(':', $option, 2);
-                        if (count($parts) == 2) {
-                        $value = htmlspecialchars(trim($parts[0]));
-                        $label = htmlspecialchars(trim($parts[1]));
-                        echo '<option value="'.$value.'" '.get_selected($stx_db_status, $value).'>'.$label.'</option>';
-                        }
-                    }
-                    }
-                }
-                ?>
-                </select>
-            </div>
-            </div>
+                                    <!-- 오른쪽: 검색 필터 -->
+                                    <div class="col-md-8">
+                                        <form class="row g-2" method="get" action="">
+                                        <div class="col-md-3">
+                                            <label for="search_phone" class="form-label">연락처</label>
+                                            <input type="text" id="search_phone" name="stx_phone" value="<?php echo $stx_phone ?>" class="form-control" placeholder="연락처" oninput="telHyphen(this);" minlength="13" maxlength="13">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label for="search_name" class="form-label">이름</label>
+                                            <input type="text" id="search_name" name="stx_name" value="<?php echo $stx_name ?>" class="form-control" placeholder="이름">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="search_db_status">진행</label>
+                                                <select id="search_db_status" name="stx_db_status" class="form-control">
+                                                <option value="">전체</option>
+                                                <?php
+                                                if ($ptn_status_custom == "basic") {
+                                                    echo '<option value="wait"  '.get_selected($stx_db_status, 'wait').'>대기</option>';
+                                                    echo '<option value="1" '.get_selected($stx_db_status, '1').'>부재</option>';
+                                                    echo '<option value="2" '.get_selected($stx_db_status, '2').'>불량</option>';
+                                                    echo '<option value="3" '.get_selected($stx_db_status, '3').'>거절</option>';
+                                                    echo '<option value="4" '.get_selected($stx_db_status, '4').'>리콜</option>';
+                                                    echo '<option value="5" '.get_selected($stx_db_status, '5').'>중복</option>';
+                                                    echo '<option value="6" '.get_selected($stx_db_status, '6').'>유망</option>';
+                                                    echo '<option value="7" '.get_selected($stx_db_status, '7').'>승인</option>';
+                                                } else {
+                                                    if (!empty($ptn_status_custom)) {
+                                                    $customOptions = explode('||', $ptn_status_custom);
+                                                    foreach ($customOptions as $option) {
+                                                        $parts = explode(':', $option, 2);
+                                                        if (count($parts) == 2) {
+                                                        $value = htmlspecialchars(trim($parts[0]));
+                                                        $label = htmlspecialchars(trim($parts[1]));
+                                                        echo '<option value="'.$value.'" '.get_selected($stx_db_status, $value).'>'.$label.'</option>';
+                                                        }
+                                                    }
+                                                    }
+                                                }
+                                                ?>
+                                                </select>
+                                            </div>
+                                            </div>
 
-          <?php if($is_pg_inflow == true) { ?>
-          <div class="col-md-2">
-            <label for="stx_pg_inflow" class="form-label">유입</label>
-            <input type="text" id="stx_pg_inflow" name="stx_pg_inflow" value="<?php echo $stx_pg_inflow ?>" class="form-control" placeholder="유입">
-          </div>
-          <?php } ?>
+                                        <?php if($is_pg_inflow == true) { ?>
+                                        <div class="col-md-2">
+                                            <label for="stx_pg_inflow" class="form-label">유입</label>
+                                            <input type="text" id="stx_pg_inflow" name="stx_pg_inflow" value="<?php echo $stx_pg_inflow ?>" class="form-control" placeholder="유입">
+                                        </div>
+                                        <?php } ?>
 
-          <div class="col-md-2">
-            <label for="search_fromto" class="form-label">일자</label>
-            <input type="text" id="search_fromto" name="stx_fromto" value="<?php echo $stx_fromto ?>" class="form-control" placeholder="YYYY-MM-DD~YYYY-MM-DD">
-          </div>
+                                        <div class="col-md-2">
+                                            <label for="search_fromto" class="form-label">일자</label>
+                                            <input type="text" id="search_fromto" name="stx_fromto" value="<?php echo $stx_fromto ?>" class="form-control" >
+                                        </div>
 
-          <div class="col-md-1">
-            <label class="form-label d-block">&nbsp;</label>
-            <button type="submit" class="btn btn-outline-success w-100">검색</button>
-          </div>
-        </form>
-      </div>
+                                        <div class="col-md-1">
+                                            <label class="form-label d-block">&nbsp;</label>
+                                            <button type="submit" class="btn btn-outline-success w-100">검색</button>
+                                        </div>
+                                        </form>
+                                    </div>
 
-    </div>
-  </div>
-</div>
+                                    </div>
+                                </div>
+                            </div>
 
 
                         
