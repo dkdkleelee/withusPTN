@@ -90,15 +90,15 @@ select a.land_idx
      , a.land_pg_idx
      , a.name 
      , convert(aes_decrypt(unhex(a.tel), 'withus_secret_key') using utf8) as tel
-     , a.userData1
-     , a.userData2
-     , a.userData3
-     , a.userData4
-     , a.userData5
-     , a.userData6
-     , a.userData7
-     , a.userData8
-     , a.userData9
+     , a.option1
+     , a.option2
+     , a.option3
+     , a.option4
+     , a.option5
+     , a.option6
+     , a.option7
+     , a.option8
+     , a.option9
      , a.db_status
      , a.land_memo
      , a.insert_date 
@@ -354,19 +354,19 @@ td input[type="text"], td select {
           </div>
           <div class="col-md-2">
             <div class="form-group">
-                <label for="search_db_status">상태</label>
+                <label for="search_db_status">진행</label>
                 <select id="search_db_status" name="stx_db_status" class="form-control">
                 <option value="">전체</option>
                 <?php
                 if ($ptn_status_custom == "basic") {
                     echo '<option value="wait"  '.get_selected($stx_db_status, 'wait').'>대기</option>';
                     echo '<option value="1" '.get_selected($stx_db_status, '1').'>부재</option>';
-                    echo '<option value="2" '.get_selected($stx_db_status, '2').'>결번</option>';
+                    echo '<option value="2" '.get_selected($stx_db_status, '2').'>불량</option>';
                     echo '<option value="3" '.get_selected($stx_db_status, '3').'>거절</option>';
-                    echo '<option value="4" '.get_selected($stx_db_status, '4').'>승인</option>';
-                    echo '<option value="5" '.get_selected($stx_db_status, '5').'>리콜</option>';
-                    echo '<option value="6" '.get_selected($stx_db_status, '6').'>가망</option>';
-                    echo '<option value="7" '.get_selected($stx_db_status, '7').'>완료</option>';
+                    echo '<option value="4" '.get_selected($stx_db_status, '4').'>리콜</option>';
+                    echo '<option value="5" '.get_selected($stx_db_status, '5').'>중복</option>';
+                    echo '<option value="6" '.get_selected($stx_db_status, '6').'>유망</option>';
+                    echo '<option value="7" '.get_selected($stx_db_status, '7').'>승인</option>';
                 } else {
                     if (!empty($ptn_status_custom)) {
                     $customOptions = explode('||', $ptn_status_custom);
@@ -431,7 +431,7 @@ td input[type="text"], td select {
                                                     <th class="text-center">이름</th>
                                                     <th class="text-center">연락처</th>
                                                     <th class="text-center">등록일</th>
-                                                    <th class="text-center">상태</th>
+                                                    <th class="text-center">진행</th>
                                                     <th>메모</th>
                                                     
                                                     <?php 
@@ -489,12 +489,12 @@ td input[type="text"], td select {
                                                     if ($ptn_status_custom == "basic") {
                                                         echo '<option value=""'.get_selected($row['db_status'], '').'>대기</option>';
                                                         echo '<option value="1"'.get_selected($row['db_status'], '1').'>부재</option>';
-                                                        echo '<option value="2"'.get_selected($row['db_status'], '2').'>결번</option>';
+                                                        echo '<option value="2"'.get_selected($row['db_status'], '2').'>불량</option>';
                                                         echo '<option value="3"'.get_selected($row['db_status'], '3').'>거절</option>';
-                                                        echo '<option value="4"'.get_selected($row['db_status'], '4').'>승인</option>';
-                                                        echo '<option value="5"'.get_selected($row['db_status'], '5').'>리콜</option>';
-                                                        echo '<option value="6"'.get_selected($row['db_status'], '6').'>가망</option>';
-                                                        echo '<option value="7"'.get_selected($row['db_status'], '7').'>완료</option>';
+                                                        echo '<option value="4"'.get_selected($row['db_status'], '4').'>리콜</option>';
+                                                        echo '<option value="5"'.get_selected($row['db_status'], '5').'>중복</option>';
+                                                        echo '<option value="6"'.get_selected($row['db_status'], '6').'>유망</option>';
+                                                        echo '<option value="7"'.get_selected($row['db_status'], '7').'>승인</option>';
                                                     } else {
                                                         if (!empty($ptn_status_custom)) {
                                                             $customOptions = explode('||', $ptn_status_custom);
@@ -590,16 +590,17 @@ td input[type="text"], td select {
                 <div class="modal-body">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="inputGroup-sizing-default">상태값</span>
+                            <span class="input-group-text" id="inputGroup-sizing-default">진행값</span>
                         </div>
                         <select id="db_status" name="db_status" class="form-control" data-style="border border-secondary">
                             <option value="0">엑셀 지정 </option>
-                            <option value="4">일괄 승인 </option>
-                            <option value="3">일괄 거절 </option>
                             <option value="1">일괄 부재 </option>
-                            <option value="2">일괄 결번 </option>
-                            <option value="5">일괄 리콜 </option>
-                            <option value="6">일괄 가망 </option>
+                            <option value="2">일괄 불량 </option>
+                            <option value="3">일괄 거절 </option>                      
+                            <option value="4">일괄 리콜 </option>
+                            <option value="5">일괄 중복 </option>
+                            <option value="6">일괄 유망 </option>
+                            <option value="7">일괄 승인 </option>
                         </select>
                     </div>
 
