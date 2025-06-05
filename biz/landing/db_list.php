@@ -68,7 +68,7 @@ if ($stx_pg_inflow) {
 if ($stx_fromto) {
 
     $from = substr($stx_fromto,0,10);
-    $to   = substr($stx_fromto,11,10);
+    $to   = substr($stx_fromto,13,10);
 
     $today = date("Y-m-d");
     if($to == $today) {
@@ -276,11 +276,17 @@ if($member['mb_ptnidx'] == 1215) {
 }
 
 ?>
-<link rel="stylesheet" href="<?php echo G5_THEME_URL?>/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-<link rel="stylesheet" href="<?php echo G5_THEME_URL?>/plugins/daterangepicker/daterangepicker.css">
+
+<!-- 추가된 css & js -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
+
+<!-- flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
 
 <script src="<?php echo G5_THEME_URL?>/plugins/moment/moment.min.js"></script>
-<script src="<?php echo G5_THEME_URL?>/plugins/daterangepicker/daterangepicker.js"></script>
+
 
 <style>
 
@@ -394,7 +400,10 @@ td input[type="text"], td select {
 
                                         <div class="col-md-2">
                                             <label for="search_fromto" class="form-label">일자</label>
-                                            <input type="text" id="search_fromto" name="stx_fromto" value="<?php echo $stx_fromto ?>" class="form-control" >
+                                            <!-- 보여지는 input -->
+                                            <input type="text" id="search_fromto" class="form-control" placeholder="YYYY-MM-DD ~ YYYY-MM-DD">
+                                            <!-- 서버로 전송될 hidden input -->
+                                            <input type="hidden" name="stx_fromto" id="real_fromto" value="<?php echo $stx_fromto ?>">
                                         </div>
 
                                         <div class="col-md-1">
@@ -623,184 +632,122 @@ td input[type="text"], td select {
     </div>
 </div>
 
+
 <script>
-    $(function() {
-        $('body').tooltip({
-            selector: '[data-toggle="tooltip"]',
-            template: '<div class="tooltip tooltip-custom" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
-        });
-
-        document.querySelector('.custom-file-input').addEventListener('change',function(e){
-            var fileName = document.getElementById("fileInput").files[0].name;
-            var nextSibling = e.target.nextElementSibling
-            nextSibling.innerText = fileName
-        })
-
-        $('#search_fromto').on('input', function() {
-            var value = $(this).val();
-            var dateRegex = /^\d{4}-\d{2}-\d{2}~\d{4}-\d{2}-\d{2}$/;
-
-            if (!dateRegex.test(value)) {
-                // 날짜 형식이 아니면 daterangepicker 인스턴스 제거
-                if ($(this).data('daterangepicker')) {
-                    $(this).data('daterangepicker').remove();
-                    $(this).val(''); // 입력값 초기화
-                }
-            }
-        });
-
-        $('#search_fromto').on('click', function() {
-            var value = $(this).val();
-            var dateRegex = /^\d{4}-\d{2}-\d{2}~\d{4}-\d{2}-\d{2}$/;
-
-            if (dateRegex.test(value)) {
-                // 필드 값이 유효한 날짜 형식일 때
-                if ($(this).data('daterangepicker')) {
-                    // 이미 daterangepicker 인스턴스가 있으면 열기
-                    $(this).data('daterangepicker').show();
-                } else {
-                    // daterangepicker 인스턴스가 없으면 새로 만들기
-                    make_datepicker("1");
-                }
-            } else if (!value) {
-                // 필드가 비어있으면 make_datepicker() 호출
-                make_datepicker("2");
-            }
-        });
-
-        var dynamicColumnCount = <?php echo $dynamicColumnCount; ?>;
-
-        var columnDefs = [
-            {targets: 0, width: '1%', className: 'col-checkbox'},
-            {targets: 1, width: '1%'},
-            {targets: 2, width: '1%'},
-            {targets: 3, width: '1%'},
-            {targets: 4, width: '1%'},
-            {targets: 5, width: '4%'},
-            {targets: 6, width: '10%'},
-        ];
-
-        var ptnIsTooltip = '<?php echo $ptn_is_tooltip; ?>';
-
-        for (var i = 0; i < dynamicColumnCount; i++) {
-            columnDefs.push({
-                targets: 7 + i,
-                width: '1%',
-                render: function(data, type, row) {
-                    if (type === 'display' && data) {
-                        // ptn_is_tooltip 값이 'Y'인 경우에만 20자 초과 시 툴팁 처리
-                        if (ptnIsTooltip === 'Y') {
-                            var fullData = data.toString();
-                            if (fullData.length > 20) {
-                                var truncated = fullData.substring(0, 20) + '...';
-                                return '<span class="memo-field" data-toggle="tooltip" title="' + fullData + '">' + truncated + '</span>';
-                            } else {
-                                return fullData;
-                            }
-                        } else {
-                            // Y가 아닐 경우 원래 데이터 그대로 반환
-                            return data;
-                        }
-                    }
-                    return data;
-                }
-            });
-        }
-
-        columnDefs.push({targets: columnDefs.length, width: '1%'});
-
-        var is_show_cd = '<?php echo $items['pg_chk_code'] ?>';
-        var is_show_utm = '<?php echo $items['pg_chk_utm'] ?>';
-        var is_show_ip = '<?php echo $items['pg_chk_ip'] ?>';
-
-        if(is_show_cd == "1") {
-            columnDefs.push({targets: columnDefs.length, width: '1%'});
-        }  
-        if(is_show_utm == "1") {
-            columnDefs.push({targets: columnDefs.length, width: '1%'});
-        }  
-        if(is_show_ip == "1") {
-            columnDefs.push({targets: columnDefs.length, width: '1%'});
-        }
-
-        var table = $('#tbl_land').DataTable({
-            "paging": false,
-            "searching": false,
-            "ordering": false,
-            "info": false,
-            "autoWidth": false,
-            "responsive": false,
-            columnDefs: columnDefs
-        });
-
-        var columnIndex = 7;
-        var newWidth = '200px';
-        table.column(columnIndex).nodes().to$().find('td').css('width', newWidth);
-        
-
-        // 특정 이벤트에서 변경 여부 플래그 설정 (예: 변경될 때)
-        $('#tbl_land tbody').on('change', 'input, select', function() {
-            var row = table.row($(this).closest('tr'));
-            // 첫 번째 열의 checkbox 선택
-            $('td:eq(0) input[type="checkbox"]', row.node()).prop('checked', true);
-        });
+$(function() {
+    $('body').tooltip({
+        selector: '[data-toggle="tooltip"]',
+        template: '<div class="tooltip tooltip-custom" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
     });
 
-    function make_datepicker(value){
+    document.querySelector('.custom-file-input').addEventListener('change', function(e) {
+        var fileName = document.getElementById("fileInput").files[0].name;
+        var nextSibling = e.target.nextElementSibling;
+        nextSibling.innerText = fileName;
+    });
 
-        var stx = '<?php echo $stx_fromto ?>';
-        var maxDay = moment().format("YYYY-MM-DD");
+    // ✅ flatpickr 호출
+    make_flatpickr();
 
-        if(stx == "") { 
-            startDay = moment().add(-1, 'month');
-            endDay = moment().format("YYYY-MM-DD");
-        } else {
-            var db_date = stx.split("~");
-            var startDay = db_date[0];
-            var endDay = db_date[1];
+    var dynamicColumnCount = <?php echo $dynamicColumnCount; ?>;
+    var columnDefs = [
+        {targets: 0, width: '1%', className: 'col-checkbox'},
+        {targets: 1, width: '1%'},
+        {targets: 2, width: '1%'},
+        {targets: 3, width: '1%'},
+        {targets: 4, width: '1%'},
+        {targets: 5, width: '4%'},
+        {targets: 6, width: '10%'},
+    ];
+
+    var ptnIsTooltip = '<?php echo $ptn_is_tooltip; ?>';
+    for (var i = 0; i < dynamicColumnCount; i++) {
+        columnDefs.push({
+            targets: 7 + i,
+            width: '1%',
+            render: function(data, type, row) {
+                if (type === 'display' && data) {
+                    if (ptnIsTooltip === 'Y') {
+                        var fullData = data.toString();
+                        if (fullData.length > 20) {
+                            var truncated = fullData.substring(0, 20) + '...';
+                            return '<span class="memo-field" data-toggle="tooltip" title="' + fullData + '">' + truncated + '</span>';
+                        } else {
+                            return fullData;
+                        }
+                    } else {
+                        return data;
+                    }
+                }
+                return data;
+            }
+        });
+    }
+
+    columnDefs.push({targets: columnDefs.length, width: '1%'});
+
+    var is_show_cd = '<?php echo $items['pg_chk_code'] ?>';
+    var is_show_utm = '<?php echo $items['pg_chk_utm'] ?>';
+    var is_show_ip = '<?php echo $items['pg_chk_ip'] ?>';
+    if (is_show_cd == "1") columnDefs.push({targets: columnDefs.length, width: '1%'});
+    if (is_show_utm == "1") columnDefs.push({targets: columnDefs.length, width: '1%'});
+    if (is_show_ip == "1") columnDefs.push({targets: columnDefs.length, width: '1%'});
+
+    var table = $('#tbl_land').DataTable({
+        paging: false,
+        searching: false,
+        ordering: false,
+        info: false,
+        autoWidth: false,
+        responsive: false,
+        columnDefs: columnDefs
+    });
+
+    var columnIndex = 7;
+    var newWidth = '200px';
+    table.column(columnIndex).nodes().to$().find('td').css('width', newWidth);
+
+    $('#tbl_land tbody').on('change', 'input, select', function() {
+        var row = table.row($(this).closest('tr'));
+        $('td:eq(0) input[type="checkbox"]', row.node()).prop('checked', true);
+    });
+});
+
+// ✅ flatpickr 함수
+function make_flatpickr() {
+    var defaultFromTo = '<?php echo $stx_fromto ?>';
+    var dates = [];
+    if (defaultFromTo && defaultFromTo.includes(' ~ ')) {
+        dates = defaultFromTo.split(' ~ ').map(s => s.trim());
+    }
+
+    flatpickr("#search_fromto", {
+        locale: "ko",
+        mode: "range",
+        dateFormat: "Y-m-d",
+        altInput: false,
+        minDate: new Date().fp_incr(-180),  // 6개월 전
+        maxDate: "today",
+        defaultDate: dates,
+        onChange: function(selectedDates, dateStr, instance) {
+            // 날짜 선택시 hidden input에 넣어줌
+            $('#real_fromto').val(dateStr.replace(' to ', ' ~ '));
         }
-            
-        $('#search_fromto').daterangepicker({
-            locale: {
-                "format": "YYYY-MM-DD",
-                "separator": "~",
-                "applyLabel": "확인",
-                "cancelLabel": "취소",
-                "fromLabel": "From",
-                "toLabel": "To",
-                "customRangeLabel": "Custom",
-                "weekLabel": "W",
-                "daysOfWeek": ["일", "월", "화", "수", "목", "금", "토"],
-                "monthNames": ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-            },
-            //minDate: minDay,
-            maxDate: maxDay,
-            showDropdowns: true,
-            startDate: startDay,
-            endDate: endDay
+    });
 
-        }, function(start, end, label) {
-            $('#search_fromto').val(start.format('YYYY-MM-DD') + '~' + end.format('YYYY-MM-DD'));
-        });
-
-        var asis = $("#search_fromto").val();
-        var tobe = asis.replace(' ~ ', '~');
-        $("#search_fromto").val(tobe);
-
-        $('#search_fromto').keypress(function(e){
-            if (e.keyCode == 10 || e.keyCode == 13)
-                e.preventDefault();
-        });
+    // 페이지 로드시도 hidden input 채워주기
+    if (dates.length === 2) {
+        $('#real_fromto').val(dates[0] + ' ~ ' + dates[1]);
+        $('#search_fromto').val(dates[0] + '  ~  ' + dates[1]);
     }
+}
 
-
-    function validateForm2() {
-        $('#modal-exc-upload').modal('hide');
-        return true;
-    }
-
-    
+function validateForm2() {
+    $('#modal-exc-upload').modal('hide');
+    return true;
+}
 </script>
+
 
 <?php
 include_once(G5_PATH . '/tail.php');
