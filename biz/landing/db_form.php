@@ -18,7 +18,7 @@ select a.land_idx
         , a.land_empno
         , a.land_used_data
         , a.name
-        , convert(aes_decrypt(unhex(a.tel), 'gonpdk_secret_key') using utf8) as tel
+        , convert(aes_decrypt(unhex(a.tel), 'withus_secret_key') using utf8) as tel
         , a.hp
         , a.tel1
         , a.tel2

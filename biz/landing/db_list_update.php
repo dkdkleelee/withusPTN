@@ -145,7 +145,7 @@ if($act_button == "엑셀다운") {
       a.land_idx 
     , a.land_pg_idx
     , a.name 
-    , convert(aes_decrypt(unhex(a.tel), 'gonpdk_secret_key') using utf8) as tel";
+    , convert(aes_decrypt(unhex(a.tel), 'withus_secret_key') using utf8) as tel";
     // dynamicColumnCount에 따라 option 컬럼 추가
     for ($i = 1; $i <= count($dynamicHeaders); $i++) {
     if (!empty($dynamicHeaders[$i - 1])) {
