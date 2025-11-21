@@ -713,34 +713,66 @@ $(function() {
     });
 });
 
-// ✅ flatpickr 함수
+// flatpickr 함수
 function make_flatpickr() {
     var defaultFromTo = '<?php echo $stx_fromto ?>';
     var dates = [];
     if (defaultFromTo && defaultFromTo.includes(' ~ ')) {
-        dates = defaultFromTo.split(' ~ ').map(s => s.trim());
+        dates = defaultFromTo.split(' ~ ').map(function(s){ return s.trim(); });
     }
+
+    var isFixing = false;
 
     flatpickr("#search_fromto", {
         locale: "ko",
         mode: "range",
         dateFormat: "Y-m-d",
         altInput: false,
-        minDate: new Date().fp_incr(-180),  // 6개월 전
+        minDate: new Date().fp_incr(-180),
         maxDate: "today",
         defaultDate: dates,
+
         onChange: function(selectedDates, dateStr, instance) {
-            // 날짜 선택시 hidden input에 넣어줌
-            $('#real_fromto').val(dateStr.replace(' to ', ' ~ '));
+            var $real = $('#real_fromto');
+
+            // 선택 해제
+            if (selectedDates.length === 0) {
+                $real.val('');
+                instance.input.value = '';
+                return;
+            }
+
+            var fmt = function(d){ return instance.formatDate(d, "Y-m-d"); };
+            var from, to;
+
+            if (selectedDates.length === 1) {
+                from = fmt(selectedDates[0]);
+                to   = from;
+            } else {
+                from = fmt(selectedDates[0]);
+                to   = fmt(selectedDates[1]);
+            }
+
+            var str = from + ' ~ ' + to;
+
+            // hidden 실제 전송값
+            $real.val(str);
+
+            // flatpickr가 자기 값 덮어쓰는 타이밍이 있어서 0ms 뒤에 다시 세팅
+            setTimeout(function(){
+                instance.input.value = str;
+            }, 0);
         }
     });
 
-    // 페이지 로드시도 hidden input 채워주기
+    // 페이지 로드시 hidden input 채워주기
     if (dates.length === 2) {
-        $('#real_fromto').val(dates[0] + ' ~ ' + dates[1]);
-        $('#search_fromto').val(dates[0] + '  ~  ' + dates[1]);
+        var initStr = dates[0] + ' ~ ' + dates[1];
+        $('#real_fromto').val(initStr);
+        $('#search_fromto').val(initStr);
     }
 }
+
 
 function validateForm2() {
     $('#modal-exc-upload').modal('hide');
