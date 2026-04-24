@@ -26,7 +26,7 @@ date_default_timezone_set("Asia/Seoul");
 // define('G5_DOMAIN', '');
 // define('G5_HTTPS_DOMAIN', '');
 
-if($_SERVER['HTTP_HOST'] == "withptn.co.kr"){
+if($_SERVER['HTTP_HOST'] == "ptn.withusmk.dk"){
     define('G5_DOMAIN', '');
     define('G5_HTTPS_DOMAIN', '');
 } else{
@@ -109,9 +109,9 @@ if (isset($g5_path['document_root'])) {
     define('DOCUMENT_ROOT', '');
 }
 
-if($_SERVER['HTTP_HOST'] == "with.co.kr"){
-    define('G5_LAND_URL',   'http://land.with.co.kr');
-    define('G5_FILE_URL',   'http://file.with.co.kr');
+if($_SERVER['HTTP_HOST'] == "ptn.withusmk.dk"){
+    define('G5_LAND_URL',   'http://land.withusmk.dk');
+    define('G5_FILE_URL',   'http://file.withusmk.dk');
 } else{
     define('G5_LAND_URL',   'https://land.withusmk.co.kr');
     define('G5_FILE_URL',   'https://file.withusmk.co.kr');
