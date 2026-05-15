@@ -10,25 +10,6 @@ if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가
             <i class="fa fa-bars"></i>
           </button>
 
-			<!-- Topbar Search -->
-			<form name="fsearchbox" class="form-inline mr-auto w-100 navbar-search" method="get" action="<?php echo G5_BBS_URL ?>/search.php" onsubmit="return fsearchbox_submit(this);">
-				<div class="input-group">
-					<input type="hidden" name="sfl" value="wr_subject||wr_content">
-					<input type="hidden" name="sop" value="and">
-					<input type="text" name="stx" class="form-control bg-light border-0 small" id="sch_stx" maxlength="20" placeholder="검색어를 입력해주세요" aria-label="Search" aria-describedby="basic-addon2">
-
-					<div class="input-group-append">
-						<button type="submit" id="sch_submit" value="검색" class="btn btn-primary"><i class="fas fa-search fa-sm"></i></button>
-					</div>
-					<!--- ./input-group-append --->
-				</div>
-				<!--- ./input-group --->
-				
-				<?php echo popular('theme/basic'); // 인기검색어, 테마의 스킨을 사용하려면 스킨을 theme/basic 과 같이 지정  ?>
-			</form>
-			
-				
-
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">            
 			
